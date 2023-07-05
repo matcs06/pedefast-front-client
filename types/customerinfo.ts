@@ -5,12 +5,12 @@ interface ChoosedOptions {
    optionPrice: number
 }
 
-export interface IOrderProducts {
+export default interface IOrderProducts {
    id: string;
    productName: string,
    productQuantity: number,
    productOrderPrice: number,
    productOriginalPrice: number,
    product_image_url?: string,
-   options: ChoosedOptions[]
+   options: ChoosedOptions[] | []
 }

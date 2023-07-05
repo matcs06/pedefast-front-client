@@ -6,12 +6,10 @@ import { AiFillCloseCircle } from "react-icons/ai"
 import ItemDetail from "../ItemDetails";
 import Router, { withRouter, useRouter } from 'next/router'
 
-
-import { productModel } from "./productModel"
 import { useEffect, useState } from "react";
 import { useCartContext } from "@/context/Context";
 
-import { ProductType, IOrderProducts } from "./types";
+import { IOrderProducts } from "./../../../types/startpage";
 import instace from "@/api/appAPI";
 
 interface IProduct {

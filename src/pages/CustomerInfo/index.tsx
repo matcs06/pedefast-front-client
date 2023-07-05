@@ -7,10 +7,10 @@ import IsNumber from "@/utils/isNumber";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react"
 import { GrLocation } from "react-icons/gr"
-import { FormatMessage } from "./formatWppMesssage";
-import { IOrderProducts } from "./types";
+import FormatMessage from "./../../utils/formatWppMessage";
+import IOrderProducts from "./../../../types/customerinfo";
 import instace from "@/api/appAPI";
-import { ApplyDiscount } from "./deliveryDiscount";
+import ApplyDiscount from "../../utils/deliveryDiscount";
 
 interface IDelivery {
    tax: string;

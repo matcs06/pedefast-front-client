@@ -2,6 +2,22 @@ import { useEffect, useState } from "react"
 
 //optionStyle: "big" | "small"
 
+interface IAddRemove {
+   onUpdate?: any;
+   quantity?: number;
+   optionStyle?: string;
+   optionTitle?: string;
+   optionName?: string;
+   optionPrice?: string;
+   optionMaxQuantity?: string;
+   blockOption?: IBlockOption
+}
+
+interface IBlockOption {
+   option_title: string;
+   block_option: boolean
+}
+
 export default function AddRemove({
    onUpdate,
    quantity = 0,
@@ -12,7 +28,7 @@ export default function AddRemove({
    optionMaxQuantity = "",
    blockOption = { option_title: "main", block_option: false }
 
-}) {
+}: IAddRemove) {
 
 
    const [selfQuantity, setSelfQuantity] = useState(quantity)

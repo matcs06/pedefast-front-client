@@ -9,7 +9,7 @@ import { BRLReais } from "../../utils/currencyFormat"
 import { useCartContext } from "@/context/Context";
 
 
-import { IOrderProducts, IProductType, ProductOrderOptions } from "./types";
+import { IOrderProducts, IProductType, ProductOrderOptions } from "../../../types/itemdetails";
 
 
 export default function ItemDetail(productModel: IProductType) {
@@ -21,8 +21,10 @@ export default function ItemDetail(productModel: IProductType) {
    const [productOptions, setProductOptions] = useState<ProductOrderOptions[]>([])
    let productOriginalPrice = Number(productModel.price)
    let productPrice = Number(productModel.price)
-   const userName = localStorage.getItem("user_name");
-
+   let userName: any = ""
+   if (typeof window !== 'undefined') {
+      userName = localStorage.getItem("user_name");
+   }
    const imagePrefixLinkDev = "http://localhost:3333/files/"
    const imagePrefixLink = "https://api.pedefast.com/files/"
 

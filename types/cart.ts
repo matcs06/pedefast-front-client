@@ -5,7 +5,7 @@ interface ChoosedOptions {
    optionPrice: number
 }
 
-export interface IOrderProducts {
+export default interface IOrderProducts {
    id: string;
    productName: string,
    productQuantity: number,

@@ -6,7 +6,7 @@ interface IDelivery {
    discount_percentage: string
 }
 
-export function ApplyDiscount(data: IDelivery, order_items_quantity: number, order_total: number, order_cupom: string) {
+export default function ApplyDiscount(data: IDelivery, order_items_quantity: number, order_total: number, order_cupom: string) {
    let discountValue = 0
    if (data.condition == "Quantidade de itens-maior ou igual") {
       if (Number(order_items_quantity) >= Number(data.parameter)) {

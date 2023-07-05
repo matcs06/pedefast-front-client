@@ -1,7 +1,7 @@
 import { useCartContext, useSubTractOrAdd } from "@/context/Context"
 import { BRLReais } from "@/utils/currencyFormat"
 import Image from "next/image"
-import { IOrderProducts } from "./types"
+import IOrderProducts from "./../../../types/cart"
 
 import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai"
 import CartButton from "@/components/CartButton"

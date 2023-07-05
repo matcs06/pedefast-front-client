@@ -1,7 +1,7 @@
 import { BRLReais } from "@/utils/currencyFormat"
-import { IOrderProducts } from "./types"
+import IOrderProducts from "../../types/customerinfo"
 
-export function FormatMessage(cartMessage: IOrderProducts[]) {
+export default function FormatMessage(cartMessage: IOrderProducts[]) {
 
    const formatedMessage = cartMessage.map((product, index) => {
       return `${product.productQuantity}x - ${product.productName}/  ${product.options?.length > 0 && "Adicionais: /" + product.options?.map((item) => "   " + item.optionName + " " + BRLReais.format(item.optionPrice).replace(",", ".") + "/")}  Subtotal: ${BRLReais.format(product.productOrderPrice).replace(",", ".")}//`
