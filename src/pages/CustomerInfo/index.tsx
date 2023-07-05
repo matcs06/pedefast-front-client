@@ -164,7 +164,7 @@ export default function CustomerInfo() {
 
          if (!response.data.deactivate_delivery) {
             if (!response.data.has_discount) {
-               setDeliveTaxAmmount(Number(response.data.tax))
+               setDeliveTaxAmmount(Number(response.data.tax) || 0)
             } else {
 
                setDeliveTaxAmmount(Number(response.data.tax) - ApplyDiscount(response.data, totalItems, cartTotalValue, ""))
