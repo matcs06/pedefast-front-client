@@ -52,7 +52,8 @@ export function StartPage() {
 
    const cartTotalValue = myCart.reduce((acc: number, cart: IOrderProducts) => acc + cart.productOrderPrice, 0)
 
-   const imagePrefixLink = "http://localhost:3333/files/"
+   const imagePrefixLinkDev = "http://localhost:3333/files/"
+   const imagePrefixLink = "https://api.pedefast.com/files/"
 
    let business_image_url: any = ""
    if (typeof window !== 'undefined') {

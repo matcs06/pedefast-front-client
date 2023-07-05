@@ -17,7 +17,8 @@ export default function Cart() {
    if (typeof window !== 'undefined') {
       userName = localStorage.getItem("user_name");
    }
-   const imagePrefixLink = "http://localhost:3333/files/"
+   const imagePrefixLinkDev = "http://localhost:3333/files/"
+   const imagePrefixLink = "https://api.pedefast.com/files/"
 
 
    return (

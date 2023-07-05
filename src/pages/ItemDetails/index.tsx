@@ -23,8 +23,8 @@ export default function ItemDetail(productModel: IProductType) {
    let productPrice = Number(productModel.price)
    const userName = localStorage.getItem("user_name");
 
-
-   const imagePrefixLink = "http://localhost:3333/files/"
+   const imagePrefixLinkDev = "http://localhost:3333/files/"
+   const imagePrefixLink = "https://api.pedefast.com/files/"
 
 
    let optionsTotalPrice = productOptions.reduce((total, option) => total + option.optionPrice, 0)
