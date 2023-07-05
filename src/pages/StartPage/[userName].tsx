@@ -59,8 +59,15 @@ export function StartPage() {
    }
 
    function OnClickProduct(product: IProduct) {
-      setShowItemDetails(true)
-      setSelectedProdut(product)
+
+      if (userDetails?.store_status == "opened") {
+         setShowItemDetails(true)
+         setSelectedProdut(product)
+      } else {
+         window.alert("Loja fechada no momento!")
+      }
+
+
    }
 
    useEffect(() => {
