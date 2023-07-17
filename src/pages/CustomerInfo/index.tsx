@@ -138,7 +138,7 @@ export default function CustomerInfo() {
 
             formatedOrder = window.encodeURIComponent(formatedOrder)
 
-            const wpplink = `https://wa.me/+55${adminPhone}?text=${formatedOrder}`
+            const wpplink = `https://api.whatsapp.com/send?text=${formatedOrder}&phone=+55${adminPhone}`
             window.open(wpplink)
             setShowBackButton(true)
          } catch (error) {
