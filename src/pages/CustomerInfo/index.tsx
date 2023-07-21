@@ -84,6 +84,12 @@ export default function CustomerInfo() {
 
 
    }
+
+   const isSafari = () => {
+      const userAgent = window.navigator.userAgent;
+      return /^((?!chrome|android).)*safari/i.test(userAgent);
+   };
+
    async function sendMessage() {
       let informAddress = false
       if (!deliveryInfo?.deactivate_delivery && customerAddress === "") {
@@ -136,10 +142,29 @@ export default function CustomerInfo() {
 
             let formatedOrder = customerInfoMessage + FormatMessage(cartMessage) + deliveryTax + totalOrderPrice + deliveryInformation + "\n" + locationLink
 
-            formatedOrder = window.encodeURIComponent(formatedOrder)
+            const encondedformatedOrder = window.encodeURIComponent(formatedOrder)
 
-            const wpplink = `https://api.whatsapp.com/send?text=${formatedOrder}&phone=+55${adminPhone}`
-            window.open(wpplink)
+
+            // Safari error hadler to bypass pop up blocker
+            if (isSafari()) {
+               const wpplinkApple = `whatsapp://send?phone=+55${adminPhone}&text=${encondedformatedOrder}`
+
+               // Create a hidden <iframe> element
+               const iframe = document.createElement("iframe");
+               iframe.style.display = "none";
+
+               // Set the src attribute of the iframe to the WhatsApp URL Scheme
+               iframe.src = wpplinkApple;
+
+               // Append the iframe to the document body
+               document.body.appendChild(iframe);
+
+            } else {
+               const wpplink = `https://wa.me/+55${adminPhone}?text=${encondedformatedOrder}`
+               window.open(wpplink, "_blank")
+            }
+
+
             setShowBackButton(true)
          } catch (error) {
             window.alert("Erro ao realizar pedido, tente novamente!")
@@ -235,10 +260,12 @@ export default function CustomerInfo() {
             ) : (
                <div className="w-4/5 flex flex-col justify-end items-end mt-6">
                   <p className="text-secondary-orange text-sm">Subtotal: {BRLReais.format(cartTotalValue)}</p>
+                  {Number(deliveryInfo?.tax) > 0 && (
+                     <p className="text-secondary-orange text-sm">Taxa de entrega: {BRLReais.format(Number(deliveryInfo?.tax))}</p>
 
-                  <p className="text-secondary-orange text-sm">Taxa de entrega: {BRLReais.format(Number(deliveryInfo?.tax))}</p>
+                  )}
                   {discount > 0 && (
-                     <p className="text-light-gree text-sm">Desconto: {BRLReais.format(discount)}</p>
+                     <p className="text-light-gree text-sm">Desconto da entrega: {BRLReais.format(discount)}</p>
 
                   )}
 
