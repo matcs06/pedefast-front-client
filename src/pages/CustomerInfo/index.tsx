@@ -114,13 +114,7 @@ export default function CustomerInfo() {
          }
 
          try {
-            await instace.post("/order", {
-               adm_user_id: adminUserId,
-               customer_name: customerName,
-               customer_phone: customerNumberUnformated,
-               customer_address: customerAddress + "/" + addressExtraInfo,
-               products_ids: orderdProdIdsAndQuantity.slice(0, -1)
-            })
+
 
             localStorage.setItem("customer_info", JSON.stringify(customerInfo))
 
@@ -144,6 +138,14 @@ export default function CustomerInfo() {
 
             const encondedformatedOrder = window.encodeURIComponent(formatedOrder)
 
+            await instace.post("/order", {
+               adm_user_id: adminUserId,
+               customer_name: customerName,
+               customer_phone: customerNumberUnformated,
+               customer_address: customerAddress + "/" + addressExtraInfo,
+               products_ids: orderdProdIdsAndQuantity.slice(0, -1),
+               product: encondedformatedOrder
+            })
 
             // Safari error hadler to bypass pop up blocker
             if (isSafari()) {
