@@ -125,16 +125,20 @@ export default function CustomerInfo() {
             //Apenas se a entrega estiver ativa
             if (!deliveryInfo?.deactivate_delivery) {
                locationLink = location?.coords.latitude ? `https://www.google.com/maps?q=${location?.coords.latitude},${location?.coords.longitude}&z=17&hl=pt-BR` : ""
-               deliveryTax = Number(deliveryInfo?.tax) - Number(discount) > 0 ? "\n*Taxa de Entrega: " + BRLReais.format((Number(deliveryInfo?.tax) - discount)) + "*" : ""
+               deliveryTax = Number(deliveryInfo?.tax) - Number(discount) > 0 ? "\nTaxa de Entrega: " + BRLReais.format((Number(deliveryInfo?.tax) - discount)) : ""
                deliveryInformation = "\nEndereço de Entrega: \n" + customerAddress + "\nComplemento: " + addressExtraInfo
+            }
+
+            if (locationLink != "") {
+               locationLink = "link\n" + locationLink
             }
 
             const customerInfoMessage = `Nome: ${customerName}\nContato: ${customerPhone}\n\n`
             const cartMessage: IOrderProducts[] = cartContent
 
-            const totalOrderPrice = "\n*Total: " + BRLReais.format(cartTotalValue + deliveryTaxAmmount) + "*\n"
+            const totalOrderPrice = "\nTotal: " + BRLReais.format(cartTotalValue + deliveryTaxAmmount) + "\n"
 
-            let formatedOrder = customerInfoMessage + FormatMessage(cartMessage) + deliveryTax + totalOrderPrice + deliveryInformation + "\n" + locationLink
+            let formatedOrder = customerInfoMessage + FormatMessage(cartMessage) + deliveryTax + totalOrderPrice + deliveryInformation + "\n\n" + locationLink
 
             const encondedformatedOrder = window.encodeURIComponent(formatedOrder)
 
@@ -149,21 +153,21 @@ export default function CustomerInfo() {
 
             // Safari error hadler to bypass pop up blocker
             if (isSafari()) {
-               const wpplinkApple = `whatsapp://send?phone=+55${adminPhone}&text=${encondedformatedOrder}`
+               //const wpplinkApple = `whatsapp://send?phone=+55${adminPhone}&text=${encondedformatedOrder}`
 
                // Create a hidden <iframe> element
-               const iframe = document.createElement("iframe");
-               iframe.style.display = "none";
+               //const iframe = document.createElement("iframe");
+               //iframe.style.display = "none";
 
                // Set the src attribute of the iframe to the WhatsApp URL Scheme
-               iframe.src = wpplinkApple;
+               //iframe.src = wpplinkApple;
 
                // Append the iframe to the document body
-               document.body.appendChild(iframe);
+               //document.body.appendChild(iframe);
 
             } else {
                const wpplink = `https://wa.me/+55${adminPhone}?text=${encondedformatedOrder}`
-               window.open(wpplink, "_blank")
+               //window.open(wpplink, "_blank")
             }
 
 
@@ -299,7 +303,8 @@ export default function CustomerInfo() {
          {showBackButton && (
             <div className="absolute w-full h-full flex justify-center items-center bg-dark-gray mt-0 bg-opacity-90 ">
                <div className="w-full flex flex-col bg-dark-gray top-1/3 h-40 p-8 justify-center items-center rounded-md">
-                  <p className="text-primary-bk w-full  flex justify-center items-center mb-2">Seu pedido foi enviado com sucesso!!</p>
+                  <p className="text-primary-bk w-full  flex justify-center items-center mb-2">😃🥳 Seu pedido foi enviado com sucesso!!</p>
+                  <p className="text-primary-bk w-full  flex justify-center items-center mb-1">Aguarde o contato da loja para confirmação</p>
                   <CartButton onClick={onSucessOrder}>Voltar à Tela inicial</CartButton>
                </div>
             </div>
