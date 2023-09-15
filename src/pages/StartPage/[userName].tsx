@@ -47,6 +47,7 @@ export function StartPage() {
    const [selectedProduct, setSelectedProdut] = useState<IProduct>()
 
    const [userDetails, setUserDetails] = useState<IUser>()
+   const [loading, setLoading] = useState(true)
 
    const cartTotalValue = myCart.reduce((acc: number, cart: IOrderProducts) => acc + cart.productOrderPrice, 0)
 
@@ -54,9 +55,6 @@ export function StartPage() {
    const imagePrefixLink = "https://api.pedefast.com/files/"
 
    let business_image_url: any = ""
-   if (typeof window !== 'undefined') {
-      business_image_url = localStorage.getItem("business_image_url")
-   }
 
    function OnClickProduct(product: IProduct) {
 
@@ -72,6 +70,7 @@ export function StartPage() {
 
    useEffect(() => {
       const userName = router.query.userName;
+      business_image_url = localStorage.getItem("business_image_url")
       localStorage.setItem("user_name", String(router.query.userName));
 
       async function loadUserInfo() {
@@ -88,7 +87,7 @@ export function StartPage() {
       try {
 
          loadUserInfo()
-
+         setLoading(false)
 
       } catch (error) {
          window.alert("Erro ao ler informaçoes da loja")
@@ -96,72 +95,87 @@ export function StartPage() {
       }
 
 
+      return () => {
+      }
 
 
    }, [router.query.userName])
 
    return (
+
       <div className="flex relative flex-col items-center text-dark-gray min-h-phoneHeigth">
-         <header className="bg-secondary-orange h-28 w-full">
-         </header>
-         <div className="w-40 absolute top-10 rounded-lg  flex flex-col justify-center items-center shadow-dark-gray shadow-md	 bg-light-gray h-28 justify-self-center">
-            <Image width={90} height={90} src={imagePrefixLink + router.query.userName + "/" + "profile/" + (userDetails?.business_image_url || business_image_url)} alt="image-produto" className="rounded-lg mt-1  w-40 h-36 m-0" />
+         {loading ? (
+            <div>Loading....</div>
+         ) : (
 
-            {userDetails?.store_status == "opened" ? (
-               <div className="w-1/2 flex text-primary-bk cursor-pointer justify-center bg-light-gree h-6 absolute top-28 rounded-lg z-10 ">
-                  Aberto
-               </div>
-            ) : (
-               <div className="w-1/2 flex text-primary-bk cursor-pointer justify-center bg-secondary-orange h-6 absolute top-28 rounded-lg z-10 ">
-                  Fechado
-               </div>
-            )}
+            <>
+               <header className="bg-secondary-orange h-28 w-full">
+               </header>
+               <div className="w-40 absolute top-10 rounded-lg  flex flex-col justify-center items-center shadow-dark-gray shadow-md	 bg-light-gray h-28 justify-self-center">
+                  <Image priority width={90} height={90} src={imagePrefixLink + router.query.userName + "/" + "profile/" + (userDetails?.business_image_url || business_image_url)} alt="image-produto" className="rounded-lg mt-1  w-40 h-36 m-0" />
 
-         </div>
-         <div className="mt-24 h-full w-full flex flex-col justify-center items-center ">
-
-            <div className="w-full flex flex-col  items-center max-h-overflow pt-2 overflow-y-scroll">
-               {userDetails?.products?.map((product) => {
-                  if (product.enabled && Number(product.quantity) > 0) {
-                     return (
-                        <div key={product.name} className="flex  flex-row max-w-md border-b-b-1/5 border-b-light-gray-2 mb-2  cursor-pointer w-full py-3 px-2 select-none" onClick={() => { OnClickProduct(product) }}>
-                           <div className="px-5 w-3/4">
-                              <p className="text-dark-gray font-bold mb-2 ">{product.name}</p>
-                              <p className="text-justify font-light text-sm">{product.description}</p>
-                              <p className="mt-3 text-light-gree text-sm">Por apenas: <b> {BRLReais.format(Number(product.price))}</b></p>
-                           </div>
-                           <Image width={130} height={120} src={imagePrefixLink + router.query.userName + "/" + product.image_url} alt="image-produto" className="rounded-lg mt-1" />
-                        </div>
-
-
-                     )
-
-                  }
-
-               })}
-            </div>
-
-
-            {
-               showItemDetails && (
-                  <div className="absolute bg-primary-bk top-0 z-10 flex flex-col items-center min-h-phoneHeigth w-full">
-                     <div className="flex h-8 w-8 absolute top-1 right-2 cursor-pointer z-20" onClick={() => { setShowItemDetails(false) }}>
-                        <AiFillCloseCircle size={30} />
+                  {userDetails?.store_status == "opened" ? (
+                     <div className="w-1/2 flex text-primary-bk cursor-pointer justify-center bg-light-gree h-6 absolute top-28 rounded-lg z-10 ">
+                        Aberto
                      </div>
-                     <ItemDetail
-                        id={selectedProduct?.id}
-                        name={selectedProduct?.name}
-                        description={selectedProduct?.description}
-                        image_url={selectedProduct?.image_url}
-                        price={selectedProduct?.price}
-                        options={selectedProduct?.options}
-                        quantity={selectedProduct?.quantity}
-                        setShowSelf={setShowItemDetails}
-                     />
+                  ) : (
+                     <div className="w-1/2 flex text-primary-bk cursor-pointer justify-center bg-secondary-orange h-6 absolute top-28 rounded-lg z-10 ">
+                        Fechado
+                     </div>
+                  )}
+
+               </div>
+
+               <div className="mt-24 h-full w-full flex flex-col justify-center items-center ">
+
+                  <div className="w-full flex flex-col  items-center max-h-overflow pt-2 overflow-y-scroll">
+                     {userDetails?.products?.map((product) => {
+                        if (product.enabled && Number(product.quantity) > 0) {
+                           return (
+                              <div key={product.name} className="flex  flex-row max-w-md border-b-b-1/5 border-b-light-gray-2 mb-2  cursor-pointer w-full py-3 px-2 select-none" onClick={() => { OnClickProduct(product) }}>
+                                 <div className="px-5 w-3/4">
+                                    <p className="text-dark-gray font-bold mb-2 ">{product.name}</p>
+                                    <p className="text-justify font-light text-sm">{product.description}</p>
+                                    <p className="mt-3 text-light-gree text-sm">Por apenas: <b> {BRLReais.format(Number(product.price))}</b></p>
+                                 </div>
+                                 <Image width={128} height={128} src={imagePrefixLink + router.query.userName + "/" + product.image_url} alt="image-produto" className="rounded-lg mt-1 w-32 h-32" />
+                              </div>
+
+
+                           )
+
+                        }
+
+                     })}
                   </div>
-               )
-            }
-         </div>
+
+
+                  {
+                     showItemDetails && (
+                        <div className="absolute bg-primary-bk top-0 z-10 flex flex-col items-center min-h-phoneHeigth w-full">
+                           <div className="flex h-8 w-8 absolute top-1 right-2 cursor-pointer z-20" onClick={() => { setShowItemDetails(false) }}>
+                              <AiFillCloseCircle size={30} />
+                           </div>
+                           <ItemDetail
+                              id={selectedProduct?.id}
+                              name={selectedProduct?.name}
+                              description={selectedProduct?.description}
+                              image_url={selectedProduct?.image_url}
+                              price={selectedProduct?.price}
+                              options={selectedProduct?.options}
+                              quantity={selectedProduct?.quantity}
+                              setShowSelf={setShowItemDetails}
+                           />
+                        </div>
+                     )
+                  }
+               </div>
+
+            </>
+
+         )}
+
+
 
          {myCart.length > 0 && (
             <div className="flex w-full justify-center absolute bottom-3 select-none">

@@ -45,7 +45,7 @@ export default function Home() {
       <main className={styles.main}>
         <p>Bem vindo ao pedefast, escolha sua loja e veja seus produtos e servicos</p>
         {admUsers.map((user) => (
-          <div className='w-2/3 bg-secondary-orange h-14 p-2 rounded-md cursor-pointer' onClick={() => { redirectToUserPage(user.username) }}>
+          <div key={user.username} className='w-2/3 bg-secondary-orange h-14 p-2 rounded-md cursor-pointer' onClick={() => { redirectToUserPage(user.username) }}>
             <p className='text-light-gray'>{user.business_name}</p>
           </div>
         ))}
